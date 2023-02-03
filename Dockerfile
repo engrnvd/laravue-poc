@@ -18,11 +18,12 @@ WORKDIR /var/www
 
 COPY --chown=www-data:www-data . .
 
-COPY ./docker/php.ini /usr/local/etc/php/php.ini
 COPY ./docker/php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+
+RUN useradd -ms /bin/bash --no-user-group -g www-data -u 1337 sail
 
 ENTRYPOINT [ "docker/entrypoint.sh" ]
