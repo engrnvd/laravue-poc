@@ -1,24 +1,10 @@
 require('dotenv').config({ path: '../.env' })
-let server
+let http = require('http').createServer()
 let ioOptions = {
-    cors: { origin: true }
+    cors: { origin: new RegExp(process.env.ALLOWED_ORIGIN_PATTERN) }
 }
-if (process.env.APP_ENV === 'production') {
-    const fs = require('fs')
-    server = require('https').Server({
-        key: fs.readFileSync(process.env.CERTS_FILE_KEY),
-        cert: fs.readFileSync(process.env.CERTS_FILE),
-        ca: fs.readFileSync(process.env.CERTS_FILE_CHAIN),
-        requestCert: false,
-        rejectUnauthorized: false
-    })
-    ioOptions.cors.origin = [process.env.FRONTEND_URL, process.env.ADMIN_URL]
-} else {
-    server = require('http').Server()
-}
-
 const { Server } = require("socket.io")
-const io = new Server(server, ioOptions)
+const io = new Server(http, ioOptions)
 const Redis = require('ioredis')
 const axios = require("axios")
 const redis = new Redis(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
@@ -30,6 +16,7 @@ redis.subscribe(redisChannel, (err, channelsCount) => {
 })
 
 redis.on('message', function (channel, message) {
+    console.log('message on', channel, ":", message)
     message = JSON.parse(message)
     const _io = message.room ? io.to(message.room) : io
     _io.emit(message.event, message.data)
@@ -43,6 +30,7 @@ io.on('connection', function (socket) {
                 Authorization: `Bearer ${token}`
             }
         }).then(res => {
+            console.log('auth success:', res.data)
             socket.join(`${process.env.SOCKET_IO_USER_ROOM}-${res.data.id}`)
         }).catch(res => {
             console.log('error', res)
@@ -65,6 +53,6 @@ io.on('connection', function (socket) {
 
 const port = process.env.SOCKET_IO_PORT || 3210
 
-server.listen(port, function () {
+http.listen(port, function () {
     console.log(`Node server is running socket.js on port ${port}`)
 })

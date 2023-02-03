@@ -10,7 +10,7 @@ RUN usermod -u 1000 www-data
 RUN apt-get update -y \
     && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev nginx supervisor \
     && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && docker-php-ext-install pdo pdo_mysql bcmath curl opcache \
+    && docker-php-ext-install pdo pdo_mysql bcmath curl opcache exif \
     && pecl install -o -f redis && docker-php-ext-enable redis \
     &&  rm -rf /tmp/pear
 
@@ -24,8 +24,5 @@ COPY ./docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
-
-RUN chmod -R 755 /var/www/storage
-RUN chmod -R 755 /var/www/bootstrap
 
 ENTRYPOINT [ "docker/entrypoint.sh" ]
