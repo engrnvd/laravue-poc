@@ -27,7 +27,7 @@ return [
     ],
 
     'allowed_origins_patterns' => [
-        env('ALLOWED_ORIGIN_PATTERN', '.+')
+        '/' . env('ALLOWED_ORIGIN_PATTERN', '.+') . '/'
     ],
 
     'allowed_headers' => ['*'],
