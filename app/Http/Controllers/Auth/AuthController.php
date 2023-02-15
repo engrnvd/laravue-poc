@@ -42,7 +42,17 @@ class AuthController extends Controller
     {
         $user = new User();
 
-        $request->validate($user->getValidationRules(['email', 'password', 'name']));
+        // check if the user was deleted before
+        $deleted = User::onlyTrashed()->whereEmail($request->email)->first();
+
+        $rules = ['password', 'name'];
+        if (!$deleted) $rules[] = 'email';
+        $request->validate($user->getValidationRules($rules));
+
+        if ($deleted) {
+            $user = $deleted;
+            $user->restore();
+        }
 
         $user = $user->fill([
             'name' => $request->name,
