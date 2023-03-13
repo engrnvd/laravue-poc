@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Mail\VerifyEmail;
 use App\Traits\HasValidationRules;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -114,6 +115,11 @@ class User extends Authenticatable
             "password" => "required|min:6",
             "is_admin" => "",
         ];
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail());
     }
 
 }

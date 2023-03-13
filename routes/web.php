@@ -24,3 +24,7 @@ Route::any('socket-io', function () {
 
     return view('socket-io');
 });
+
+if (env('APP_ENV') !== 'production') {
+    require_once __DIR__ . "/test-routes.php";
+};
