@@ -8,7 +8,7 @@ ENV PHP_OPCACHE_REVALIDATE_FREQ=1
 RUN usermod -u 1000 www-data
 
 RUN apt-get update -y \
-    && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev nginx supervisor \
+    && apt-get install -y unzip libpq-dev libcurl4-gnutls-dev nginx supervisor cron \
     && apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && docker-php-ext-install pdo pdo_mysql bcmath curl opcache exif \
     && pecl install -o -f redis && docker-php-ext-enable redis \
@@ -23,6 +23,9 @@ COPY ./docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+COPY ./docker/crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab
+RUN /usr/bin/crontab /etc/cron.d/crontab
 
 RUN useradd -ms /bin/bash --no-user-group -g www-data -u 1337 sail
 

@@ -25,4 +25,5 @@ php artisan db:seed --force
 php-fpm -D
 echo 'running nginx'
 service nginx start
+/usr/sbin/cron
 supervisord -c /etc/supervisor/conf.d/supervisord.conf
