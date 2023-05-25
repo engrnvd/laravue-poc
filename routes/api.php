@@ -27,3 +27,7 @@ Route::post('trigger-socket-event', function () {
 
 
 Route::post('cypress/cleanup', [\App\Http\Controllers\CypressController::class, 'cleanUp']);
+
+if (env('APP_ENV') !== 'production') {
+    require_once __DIR__ . "/test-routes.php";
+};
