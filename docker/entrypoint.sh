@@ -1,8 +1,6 @@
 #!/bin/bash
 
-if [ ! -f "vendor/autoload.php" ]; then
-    composer install --no-progress --no-interaction
-fi
+composer install --no-progress --no-interaction
 
 if [ ! -f ".env" ]; then
     echo "Creating env file for env $APP_ENV"

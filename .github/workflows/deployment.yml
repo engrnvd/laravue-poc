@@ -18,6 +18,4 @@ jobs:
         run: cp /var/www/sp2-api/.env.production /var/www/sp2-api/_work/sp2-api/sp2-api/.env
       - name: Build the Docker image
         run: docker compose down && docker compose up -d
-      - name: Install dependencies
-        run: docker exec sp2-api-laravel.app-1 composer install
 
