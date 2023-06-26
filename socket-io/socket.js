@@ -7,7 +7,7 @@ const { Server } = require("socket.io")
 const io = new Server(http, ioOptions)
 const Redis = require('ioredis')
 const axios = require("axios")
-const redis = new Redis(`redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
+const redis = new Redis(`redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`)
 
 const redisChannel = process.env.SOCKET_IO_CHANNEL || 'socket-io'
 redis.subscribe(redisChannel, (err, channelsCount) => {
