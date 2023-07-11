@@ -110,6 +110,12 @@ class AuthController extends Controller
         return $this->signupResponse($user);
     }
 
+    public function sendVerificationEmail()
+    {
+        User::current()->sendEmailVerificationNotification();
+        return '';
+    }
+
     public function forgotPassword(Request $request): string
     {
         $user = User::where('email', $request->email)->first();
