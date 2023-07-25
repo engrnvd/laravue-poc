@@ -62,7 +62,7 @@ return [
      * */
     'extra-entries' => [
         [
-            'filename' => $frontendBaseDir . 'router/index.ts',
+            'filename' => $frontendBaseDir . 'router/routes.ts',
             'template' => 'vue-route',
             'identifier' => '// vue routes generated here. Do not remove this line.',
         ],
