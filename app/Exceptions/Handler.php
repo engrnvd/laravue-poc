@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -46,5 +47,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            $model = app($e->getModel());
+            return response(['message' => \Str::of($model->getTable())->singular()->title() . ' not found', 'status' => 'fail'], 200);
+        }
+
+        $message = $e->getMessage() ? $e->getMessage() : $e->getTraceAsString();
+        \Log::error($e->getMessage() . "\n" . $e->getTraceAsString());
+        return response(['message' => $message, 'status' => 'fail'], 200);
     }
 }
