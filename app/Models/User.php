@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Mail\VerifyEmail;
 use App\Traits\HasValidationRules;
+use App\Traits\OnlineUsersTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -53,7 +55,8 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasValidationRules, HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasValidationRules, HasApiTokens, HasFactory, Notifiable, SoftDeletes,
+        OnlineUsersTrait;
 
     protected $fillable = [
         'name',

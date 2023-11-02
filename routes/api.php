@@ -8,7 +8,9 @@ require __DIR__ . '/auth.php';
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
-        return $request->user();
+        $user = \App\Models\User::current();
+        $user->addToOnlineUsers();
+        return $user;
     });
 
     Route::middleware('throttle:6,1')->post('send-verification-email', [AuthController::class, 'sendVerificationEmail']);

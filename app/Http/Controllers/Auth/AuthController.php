@@ -36,7 +36,7 @@ class AuthController extends Controller
 
         try {
             $data = parseJwt($request->credential);
-            \Log::info(to_str($data));
+            logContent(to_str($data), 'google-sign-ins.log');
             $email = \Arr::get($data, 'email');
             $name = \Arr::get($data, 'name');
             $pic = \Arr::get($data, 'picture');
