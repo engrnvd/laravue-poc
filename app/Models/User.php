@@ -126,4 +126,8 @@ class User extends Authenticatable
         $this->notify(new VerifyEmail());
     }
 
+    public function activities(): HasMany
+    {
+        return $this->hasMany(UserActivity::class);
+    }
 }

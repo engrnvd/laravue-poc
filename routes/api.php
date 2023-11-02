@@ -11,7 +11,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
-    Route::middleware('throttle:1,1')->post('send-verification-email', [AuthController::class, 'sendVerificationEmail']);
+    Route::middleware('throttle:6,1')->post('send-verification-email', [AuthController::class, 'sendVerificationEmail']);
 
     Route::post('/profile/update', [AuthController::class, 'update']);
     Route::post('/profile/change-password', [AuthController::class, 'changePassword']);

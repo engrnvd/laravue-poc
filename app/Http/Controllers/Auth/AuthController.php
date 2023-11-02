@@ -112,7 +112,19 @@ class AuthController extends Controller
 
     public function sendVerificationEmail()
     {
-        User::current()->sendEmailVerificationNotification();
+        $user = User::current();
+
+        $activityTitle = 'Resent Verification Email';
+        $activity = $user->activities()
+            ->where('title', $activityTitle)
+            ->where('created_at', '>', Carbon::now()->subMinutes(30))
+            ->first();
+
+        if ($activity) return '';
+
+        UserActivity::record($user->id, 'Account', $activityTitle, []);
+
+        $user->sendEmailVerificationNotification();
         return '';
     }
 
