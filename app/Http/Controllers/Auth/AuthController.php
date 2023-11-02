@@ -30,6 +30,41 @@ class AuthController extends Controller
         return $this->loginResponse($user);
     }
 
+    function loginWithGoogle(Request $request)
+    {
+        if (!$request->credential) abort(400, "Could not login");
+
+        try {
+            $data = parseJwt($request->credential);
+            \Log::info(to_str($data));
+            $email = \Arr::get($data, 'email');
+            $name = \Arr::get($data, 'name');
+            $pic = \Arr::get($data, 'picture');
+
+            if (!$name || !$email) abort(400, 'Could not login');
+
+            $existingUser = true;
+            $user = User::withTrashed()->where('email', $email)->first();
+            if (!$user) {
+                $user = new User();
+                $existingUser = false;
+                $user->email_verified_at = Carbon::now();
+            }
+            if ($user->deleted_at) $user->deleted_at = null;
+
+            $user->email = $email;
+            $user->name = $name;
+            $user->avatar = $pic;
+            $user->password = $user->password ?? 'google';
+            $user->save();
+
+            return $existingUser ? $this->loginResponse($user) : $this->signupResponse($user);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            abort(400, "Could not login");
+        }
+    }
+
     private function loginResponse(User $user): array
     {
         return [
@@ -61,9 +96,18 @@ class AuthController extends Controller
         ]);
 
         $user->save();
-        $user->sendEmailVerificationNotification();
 
-        return $this->loginResponse($user);
+        if ($id = $request->get('inviteId')) {
+            $invite = SitemapInvite::find(intval($id));
+            if ($invite) $user->acceptInvite($invite);
+            // invited user already has a verified email
+            $user->email_verified_at = Carbon::now();
+            $user->save();
+        } else {
+            $user->sendEmailVerificationNotification();
+        }
+
+        return $this->signupResponse($user);
     }
 
     public function forgotPassword(Request $request): string
