@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return ['Laravel' => app()->version(), 'Author' => \App\Models\User::first()->name];
+    return config('app.name');
 });
 
 Route::any('socket-io', function () {
