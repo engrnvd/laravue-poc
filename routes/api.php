@@ -25,6 +25,7 @@ Route::post('trigger-socket-event', function () {
     $forUser ? \App\Helpers\SocketIo::forCurrentUser($event, $data) : \App\Helpers\SocketIo::trigger($event, $data);
 });
 
+Route::post('/admin/feedback', [\App\Http\Controllers\AdminController::class, 'feedback']);
 
 Route::post('cypress/cleanup', [\App\Http\Controllers\CypressController::class, 'cleanUp']);
 
