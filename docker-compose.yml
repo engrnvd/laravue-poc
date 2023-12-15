@@ -52,7 +52,6 @@ services:
     command: sh -c "npm install && node socket.js"
     restart: on-failure
     depends_on:
-      - redis
       - laravel.app
     ports:
       - "${SOCKET_IO_PORT:-3210}:3210"
