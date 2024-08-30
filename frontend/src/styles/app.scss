@@ -1,0 +1,56 @@
+:root {
+    --border-radius: 1em;
+    --form-element-border-radius: 0.75em;
+    --golden: #f2bc06;
+}
+
+svg {
+    max-width: 100%;
+}
+
+.rounded {
+    border-radius: var(--border-radius);
+}
+
+.choices-toggle {
+    .choices-list {
+        gap: 0;
+    }
+
+    .u-chip {
+        padding-inline: 1em !important;
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+
+        &:last-child {
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+    }
+}
+
+.accordion-menu {
+    margin-block: 0 !important;
+    box-shadow: none;
+    background-color: transparent;
+
+    .header {
+        padding: 0 !important;
+        border-bottom: none !important;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    .body {
+        padding-left: 1em;
+    }
+}
+
+.u-btn.golden, .apm-model .u-btn.primary {
+    background-color: var(--golden) !important;
+
+    &:hover {
+        background-color: var(--golden) !important;
+    }
+}
+
