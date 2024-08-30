@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import {useRouter} from 'vue-router'
-import {useAuthStore} from '@/stores/auth.store'
-import {onBeforeMount} from 'vue'
+import { useAuthStore } from '@/stores/auth.store'
+import { onBeforeMount } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const auth = useAuthStore()
 
 onBeforeMount(() => {
-    if (auth.isLoggedIn) router.replace('/projects')
+    if (auth.isLoggedIn) router.replace('/profile')
     else router.replace('/login')
 })
 

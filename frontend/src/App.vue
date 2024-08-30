@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { _titleCase } from 'nvd-js-helpers/string-helper'
-import Sidebar from 'src/components/layout/sidebar/Sidebar.vue'
 import { env } from 'src/env'
 import { watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
@@ -23,7 +22,6 @@ watch(() => route.name, routeName => {
         <MainHeader v-if="route.meta?.auth || route.name === 'sitemap'"/>
 
         <div class="d-flex flex-grow-1 content-container">
-            <Sidebar v-if="route.meta?.auth"/>
             <main :class="route.name" class="flex-grow-1 main-content d-flex flex-column">
                 <RouterView/>
             </main>

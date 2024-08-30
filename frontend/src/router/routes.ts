@@ -1,10 +1,6 @@
 import { useAuthStore } from 'src/stores/auth.store'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import { devRoutes } from './dev-routes'
-
-// @ts-ignore
-const devModeRoutes = import.meta.env.DEV ? devRoutes : []
 
 const router = createRouter({
   // @ts-ignore
@@ -43,7 +39,6 @@ const router = createRouter({
         { path: '/accept-invite', component: () => import('@/views/AcceptInviteView.vue') },
       ]
     },
-    ...devModeRoutes,
   ]
 })
 
@@ -52,7 +47,7 @@ router.beforeEach(async (to, from) => {
 
   if (to.meta.auth && !auth.isLoggedIn) return '/login'
 
-  if (to.meta.authRoute && auth.isLoggedIn) return '/projects'
+  if (to.meta.authRoute && auth.isLoggedIn) return '/profile'
 })
 
 export default router
