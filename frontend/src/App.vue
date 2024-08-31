@@ -4,7 +4,6 @@ import { env } from 'src/env'
 import { watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import MainHeader from './components/layout/header/MainHeader.vue'
-import MainFooter from './components/layout/MainFooter.vue'
 
 const route = useRoute()
 
@@ -26,8 +25,6 @@ watch(() => route.name, routeName => {
                 <RouterView/>
             </main>
         </div>
-
-        <MainFooter/>
     </div>
 </template>
 

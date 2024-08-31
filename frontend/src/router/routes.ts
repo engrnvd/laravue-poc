@@ -36,7 +36,6 @@ const router = createRouter({
       path: '', meta: { authRoute: true }, children: [
         { path: '/forgot-password', name: 'forgot-password', component: () => import('../views/LoginView.vue') },
         { path: '/email-verified', component: () => import('@/views/EmailVerifiedView.vue') },
-        { path: '/accept-invite', component: () => import('@/views/AcceptInviteView.vue') },
       ]
     },
   ]
